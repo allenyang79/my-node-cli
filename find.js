@@ -15,7 +15,12 @@ if(args.length==0){
 	//options.path='/users/a2279871/Desktop/test';
 	options.filePattern='.php';
 	options.pathPettern='skk';
-	options.contentPattern='Model'
+	options.contentPattern='Model';
+	options.findFileProcress=function(filePath){
+		console.log(filePath);
+
+	}
+
 }else{
 	//now not support
 	console.log(clc.red('now not support input arguments by commend line'));
@@ -29,8 +34,9 @@ defaultSettings={
 	filePattern:'.*',
 	filePatternModifiers:'i',
 	contentPattern:null,
-	contentPatternModifiers:'gm'
-	
+	contentPatternModifiers:'gm',
+	findFileProcress:function(filePath){
+	}
 }
 
 //綁定設定
@@ -88,8 +94,15 @@ console.log(clc.green('===FIND START....==='));
 
 findPath(settings.path);
 console.log(clc.green('===FIND COMPLETE==='));
-if(findResults.length>0)
-	console.dir(findResults);
+if(findResults.length>0){
+	if(typeof settings.findFileProcress==='function'){
+		_.each(findResults,function(filePath){
+			settings.findFileProcress(filePath);
+		});
+	}else{
+		console.dir(findResults);
+	}
+}
 else{
 	console.log(clc.red('===SEARCH NOTHING==='));
 }
